@@ -14,3 +14,13 @@
 table, tr, th {
   border: 1px solid red;
 }
+
+.dropdown-menu {
+  border: 1px solid red;
+  width: fit-content;
+}
+
+.mushroom-query{
+  border: 1px solid red;
+  width: fit-content;
+}

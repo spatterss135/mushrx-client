@@ -1,14 +1,13 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Map from './components/Map';
-import Distance from './components/functions/Distance';
-import FilterYear from './components/FilterYear'
 import WeatherPanel from './components/WeatherPanel'
+import MorelsByDistance from './components/queryComponents/morelsByDistance';
+import CurrentWeather from './components/CurrentWeather';
 import { useState, useEffect } from 'react';
 import data from './practice'
 
 function App() {
-
   const [weatherData, setWeatherData] = useState({})
   const [years, setYears] = useState([2021, 2020, 2019, 2018, 2017])
   const [filteredMorels, setFilteredMorels] = useState([])
@@ -40,32 +39,13 @@ function App() {
   }, [])
 
   
-  async function morelsWithinFiftyMiles(){
-    async function getMorelMarkers(){
-      const response = await fetch('http://localhost:5000')
-      const rData = await response.json()
-      return rData
-    }
-    let allShrooms = await getMorelMarkers()
-    
-    let tempMorels = []
-    for (let i=0;i<allShrooms.length;i++){
-      let distance = Distance(userLocation, allShrooms[i])
-      let shroomYear = new Date(allShrooms[i].found_on).getFullYear()
-      console.log(shroomYear)
-      if (distance < 50 && years.includes(shroomYear)){
-        tempMorels.push(allShrooms[i])
-      }
-    }
-    setFilteredMorels(tempMorels)
-    
-  }
+
   
   async function getWeather(){
     const location = `${userLocation.latitude},${userLocation.longitude}`
     let tempWeather = {}
     let i = 0
-    let year = 2022
+    let year = new Date().getFullYear()
     while (i<dates.length){
     const dateOne = dates[i][0]
       const dateTwo = dates[i][1]
@@ -90,10 +70,12 @@ function App() {
   return (
     <div className="App">
       <button onClick={getSampleWeather}>Click me For Weather</button>
-      <button onClick={morelsWithinFiftyMiles}>Click me For Morels</button>
+     
+      <MorelsByDistance setFilteredMorels={setFilteredMorels} years={years} userLocation={userLocation} setYears={setYears}/> 
       {userLocation && <Map morelData={filteredMorels} userLocation={userLocation}/> }
-      <FilterYear setYears={setYears} years={years}/>
-      {Object.keys(weatherData).length > 0 && <WeatherPanel data={weatherData}/>}
+      
+      {Object.keys(weatherData).length > 0 && <WeatherPanel data={weatherData} dates={dates}/>}
+      {Object.keys(weatherData).length > 0 && <CurrentWeather data={weatherData}/>}
     </div>
   );
 }
