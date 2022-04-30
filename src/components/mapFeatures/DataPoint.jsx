@@ -17,8 +17,19 @@ export default function DataPoint({latitude, longitude, popup, type}){
     iconAnchor: [12.5, 41],
     popupAnchor: [0, -41]
   });
+
+  const redIcon = new LeafIcon({
+    iconUrl:
+      require("../../Static/Icons/userpoint.png"),
+    iconSize:  [34, 41], // size of the icon
+    iconAnchor: [17, 41],
+    popupAnchor: [0, -41]
+  });
   if (type == 'user'){
     iconChoice = greenIcon
+  }
+  else if  (type == 'userpoint'){
+    iconChoice = redIcon
   }
   else{
     iconChoice= blueIcon
