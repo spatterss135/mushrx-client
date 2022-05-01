@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import data from './practice'
 
 function App() {
+  const [loginFormUp, setLoginFormUp] = useState(false)
   const [user, setUser] = useState(undefined)
   const [userDB, setUserDB] = useState([])
   const [userPoints, setUserPoints] = useState(undefined)
@@ -112,19 +113,19 @@ function App() {
 
   return (
     <div className="App">
-      {user && <h1>Hello {user.username}</h1>}
+      {/* {user && <h1>Hello {user.username}</h1>}
       <button onClick={getSoilStats}>Click me For Soil</button>
       <button onClick={getSampleWeather}>Click me For Weather</button>
       {!user && <LoginForm setUser={setUser} userDB={userDB}/> }
      
-      <MorelsByDistance setFilteredMorels={setFilteredMorels} years={years} userLocation={userLocation} setYears={setYears}/>  
+      <MorelsByDistance setFilteredMorels={setFilteredMorels} years={years} userLocation={userLocation} setYears={setYears}/>   */}
       {userLocation && <Map morelData={filteredMorels} userLocation={userLocation} setlatLong={setlatLong} latLong={latLong} user={user} userIsAddingNewMarker={userIsAddingNewMarker} userPoints={userPoints}  setUserPoints={setUserPoints}/> }
-  
-      {Object.keys(weatherData).length > 0 && <WeatherPanel data={weatherData} dates={dates}/>}
+      {loginFormUp && <LoginForm setUser={setUser} userDB={userDB} setLoginFormUp={setLoginFormUp}/> }
+      {/* {Object.keys(weatherData).length > 0 && <WeatherPanel data={weatherData} dates={dates}/>}
       {Object.keys(weatherData).length > 0 && <CurrentWeather data={weatherData} soilData={soilData}/>}
       {user && <AddUserPoint userIsAddingNewMarker={userIsAddingNewMarker} setUserIsAddingNewMarker={setUserIsAddingNewMarker} latLong={latLong} user={user} setlatLong={setlatLong} setUserPoints={setUserPoints}/> }
-      {user && <GetUserPoints userPoints={userPoints} setUserPoints={setUserPoints}/>}
-      {/* <ToolMenu /> */}
+      {user && <GetUserPoints userPoints={userPoints} setUserPoints={setUserPoints}/>} */}
+      <ToolMenu loginFormUp={loginFormUp} setLoginFormUp={setLoginFormUp}setFilteredMorels={setFilteredMorels} years={years} userLocation={userLocation} setYears={setYears} setUserPoints={setUserPoints} user={user}/>
     </div>
   );
 }

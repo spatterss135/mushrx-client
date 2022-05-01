@@ -26,8 +26,7 @@ export default function MorelsByDistance({userLocation, years, setFilteredMorels
 
     return (
         <div className="mushroom-query">
-            <button className="dropdown-button">Show morels within...</button>
-            <div className="dropdown-menu">
+            <div className="mydropdown-menu">
             <div >
             <input type="range" min="25" max="200" defaultValue={distanceQuery} onChange={(e)=> setDistanceQuery(e.target.value)}/>
             <div>{distanceQuery} miles</div>
