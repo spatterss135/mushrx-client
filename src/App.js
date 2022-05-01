@@ -125,7 +125,7 @@ function App() {
       {Object.keys(weatherData).length > 0 && <CurrentWeather data={weatherData} soilData={soilData}/>}
       {user && <AddUserPoint userIsAddingNewMarker={userIsAddingNewMarker} setUserIsAddingNewMarker={setUserIsAddingNewMarker} latLong={latLong} user={user} setlatLong={setlatLong} setUserPoints={setUserPoints}/> }
       {user && <GetUserPoints userPoints={userPoints} setUserPoints={setUserPoints}/>} */}
-      <ToolMenu loginFormUp={loginFormUp} setLoginFormUp={setLoginFormUp}setFilteredMorels={setFilteredMorels} years={years} userLocation={userLocation} setYears={setYears} setUserPoints={setUserPoints} user={user}/>
+      <ToolMenu  setUser={setUser}loginFormUp={loginFormUp} setLoginFormUp={setLoginFormUp}setFilteredMorels={setFilteredMorels} years={years} userLocation={userLocation} setYears={setYears} setUserPoints={setUserPoints} user={user}/>
     </div>
   );
 }
