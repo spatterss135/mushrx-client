@@ -45,12 +45,50 @@ table, tr, th {
 .mydropdown-menu {
   border: 1px solid red;
   width: fit-content;
+  padding: 1rem;
 }
 
 .mushroom-query{
-  border: 1px solid red;
   width: fit-content;
+  padding: 1rem;
 }
+.mushroom-query> button{
+  margin-top: 1rem;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.top-mushroom-data{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown-menu.show{
+  background-color: rgba(51, 51, 51, 0.899);
+  color: antiquewhite;
+  padding-top: 0;
+  padding-bottom: 0;
+  
+
+}
+
+
+.table {
+  margin-bottom: 0;
+}
+
+.nav-link{
+  color: #2aacfd;
+}
+.form-text {
+  color: antiquewhite;
+}
+.text-muted.form-text {
+  color: antiquewhite;
+}
+
 
 .loginForm {
   position: absolute;
@@ -95,10 +133,66 @@ table, tr, th {
   height: 2.3rem;
   background-color: rgb(44, 42, 42);
   border-radius: 50%;
-  padding: 3px
+  padding: 3px;
+}
+
+.avatar:hover {
+  cursor: pointer;
+  background-color: rgb(53, 52, 52);
+
 }
 
 .nav-1{
   display: flex;
 
+}
+
+.btn-group-vertical {
+  z-index: 400;
+  position: absolute;
+  top: 10%;
+  left: 95%;
+  background-color: rgba(51, 51, 51, 0.355);
+  
+}
+
+
+.btn-group-vertical:hover{
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.userlocate-btn{
+  height: 1rem;
+}
+.btn-outline-dark:hover{
+background-color: rgba(0, 0, 0, 0.649);
+animation: grow 1s forwards ;
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(1.25);
+  } 
+}
+
+
+.point-menu{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.trashmancan{
+  height: 1rem;
+}
+
+
+.removebtn{
+  padding: 0;
+  background-color: white;
+  border: none;
 }
