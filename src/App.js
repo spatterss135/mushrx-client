@@ -2,9 +2,8 @@ import "./App.css";
 import ToolMenu from "./components/ToolMenu";
 import moment from "moment";
 import Map from "./components/Map";
-import WeatherPanel from "./components/DataPanels/WeatherPanel";
-import MorelsByDistance from "./components/queryComponents/MorelsByDistance";
-import CurrentWeather from "./components/DataPanels/CurrentWeather";
+
+
 import LoginForm from "./components/LoginForm";
 import GetUserPoints from "./components/mapFeatures/GetUserPoints";
 import AddUserPoint from "./components/mapFeatures/AddUserPoint";
@@ -13,16 +12,7 @@ import MapTools from "./components/MapTools";
 import { useState, useEffect } from "react";
 import data from "./practice";
 import PolygonNoteBoard from "./components/PolygonNoteBoard";
-import {
-  DropdownButton,
-  Dropdown,
-  NavDropdown,
-  Accordion,
-  CloseButton,
-  Button,
-  ButtonGroup,
-} from "react-bootstrap";
-import { useMapEvent } from "react-leaflet";
+
 
 function App() {
   // 1
