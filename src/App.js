@@ -8,8 +8,11 @@ import CurrentWeather from "./components/DataPanels/CurrentWeather";
 import LoginForm from "./components/LoginForm";
 import GetUserPoints from "./components/mapFeatures/GetUserPoints";
 import AddUserPoint from "./components/mapFeatures/AddUserPoint";
+import AddUserPolygon from "./components/mapFeatures/AddUserPolygon";
+import MapTools from "./components/MapTools";
 import { useState, useEffect } from "react";
 import data from "./practice";
+import PolygonNoteBoard from "./components/PolygonNoteBoard";
 import {
   DropdownButton,
   Dropdown,
@@ -19,28 +22,37 @@ import {
   Button,
   ButtonGroup,
 } from "react-bootstrap";
+import { useMapEvent } from "react-leaflet";
 
 function App() {
+  // 1
   const [loginFormUp, setLoginFormUp] = useState(false);
   const [user, setUser] = useState(undefined);
   const [userDB, setUserDB] = useState([]);
   const [userPoints, setUserPoints] = useState(undefined);
+  // 5
   const [weatherData, setWeatherData] = useState(undefined);
   const [soilData, setSoilData] = useState(undefined);
   const [years, setYears] = useState([2021, 2020, 2019, 2018, 2017]);
   const [filteredMorels, setFilteredMorels] = useState([]);
   const [userLocation, setUserLocation] = useState(undefined);
+  // 10
   const [userIsAddingNewMarker, setUserIsAddingNewMarker] = useState(false);
+  const [userIsAddingNewPolygon, setUserIsAddingNewPolygon] = useState(false);
+  const [polyPoints, setPolyPoints] = useState(undefined);
+  const [userPolygons, setUserPolygons] = useState(undefined)
   const [latLong, setlatLong] = useState(undefined);
+  // 15
   const [dates, setDates] = useState([]);
   const [map, setMap] = useState(null);
   const [layer, setLayer] = useState(undefined);
-  const [userCity, setUserCity] = useState('Pudding')
+  const [userCity, setUserCity] = useState("Pudding");
+  const [polygonNotes, setPolygonNotes] = useState(undefined)
 
   function findUser() {
-    map.flyTo([userLocation.latitude, userLocation.longitude]);
+    map.flyTo([userLocation.latitude, userLocation.longitude], 10);
   }
-
+  
   useEffect(() => {
     dong();
     let fetchUsers = async () => {
@@ -58,8 +70,7 @@ function App() {
       });
     };
     getLocation();
-     
-    
+
     let tempDates = [];
     // let d = new Date()
     for (let i = 0; i < 5; i++) {
@@ -77,18 +88,19 @@ function App() {
     setDates(tempDates);
   }, []);
 
-  useEffect(()=> {
-    async function getCity(){
-      if (userLocation){
-      let response = await fetch(`https://api.myptv.com/geocoding/v1/locations/by-position/${userLocation.latitude}/${userLocation.longitude}?language=en`, {headers: {'apiKey': `${process.env.REACT_APP_GEOCODE}`}})
-      let rData = await response.json()
-      console.log(rData)
-      setUserCity(rData.locations[0].address.city)
+  useEffect(() => {
+    async function getCity() {
+      if (userLocation) {
+        let response = await fetch(
+          `https://api.myptv.com/geocoding/v1/locations/by-position/${userLocation.latitude}/${userLocation.longitude}?language=en`,
+          { headers: { apiKey: `${process.env.REACT_APP_GEOCODE}` } }
+        );
+        let rData = await response.json();
+        setUserCity(rData.locations[0].address.city);
       }
-
     }
-    getCity()
-  }, [userLocation])
+    getCity();
+  }, [userLocation]);
 
   async function getWeather() {
     const location = `${userLocation.latitude},${userLocation.longitude}`;
@@ -170,9 +182,9 @@ function App() {
   }
 
   function changeLayer(e) {
-    layer.setUrl(e)
+    layer.setUrl(e);
   }
-  
+
   return (
     <div className="App">
       {userLocation && (
@@ -188,6 +200,12 @@ function App() {
           setUserPoints={setUserPoints}
           layer={layer}
           setLayer={setLayer}
+          polyPoints={polyPoints}
+          setPolyPoints={setPolyPoints}
+          userIsAddingNewPolygon={userIsAddingNewPolygon}
+          userPolygons={userPolygons}
+          polygonNotes={polygonNotes}
+          setPolygonNotes={setPolygonNotes}
         />
       )}
       {loginFormUp && (
@@ -197,7 +215,7 @@ function App() {
           setLoginFormUp={setLoginFormUp}
         />
       )}
-      {user && (
+      {user && userIsAddingNewMarker && (
         <AddUserPoint
           userIsAddingNewMarker={userIsAddingNewMarker}
           setUserIsAddingNewMarker={setUserIsAddingNewMarker}
@@ -205,6 +223,16 @@ function App() {
           user={user}
           setlatLong={setlatLong}
           setUserPoints={setUserPoints}
+        />
+      )}
+      {user && userIsAddingNewPolygon && (
+        <AddUserPolygon
+          userIsAddingNewPolygon={userIsAddingNewPolygon}
+          setUserIsAddingNewPolygon={setUserIsAddingNewPolygon}
+          polyPoints={polyPoints}
+          setPolyPoints={setPolyPoints}
+          user={user}
+          setUserPolygons={setUserPolygons}
         />
       )}
       <ToolMenu
@@ -225,41 +253,23 @@ function App() {
         userPoints={userPoints}
         map={map}
         userCity={userCity}
+        setUserPolygons={setUserPolygons}
       />
 
-      <ButtonGroup vertical>
-        <Button onClick={findUser} variant="outline-dark" title="Find User">
-          <img className="userlocate-btn" src="Icons/user.png" />
-        </Button>
-        {user && (
-          <Button
-            onClick={() => setUserIsAddingNewMarker(true)}
-            variant="outline-dark"
-            title="Add Point"
-          >
-            <img className="userlocate-btn" src="Icons/plus.png" />
-          </Button>
-        )}
-        <Dropdown onSelect={changeLayer} as={ButtonGroup} drop="start" variant="outline-dark">
-          <Dropdown.Toggle id="dropdown-custom-1" variant="outline-dark">
-            <img className="userlocate-btn" src="Icons/map.png" />
-          </Dropdown.Toggle>
-          <Dropdown.Menu className="super-colors">
-            <Dropdown.Item
-              eventKey="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            >
-              StreetMap
-            </Dropdown.Item>
-            <Dropdown.Item eventKey="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png">
-              TopoMap
-            </Dropdown.Item>
-            <Dropdown.Item eventKey="https://{s}.tile.thunderforest.com/spinal-map/{z}/{x}/{y}.png?apikey=6cc7d3a6b182473e8aa8a19d7838d306">
-              Something else
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </ButtonGroup>
+      <MapTools
+        findUser={findUser}
+        user={user}
+        setUserIsAddingNewMarker={setUserIsAddingNewMarker}
+        userIsAddingNewMarker={userIsAddingNewMarker}
+        setUserIsAddingNewPolygon={setUserIsAddingNewPolygon}
+        userIsAddingNewPolygon={userIsAddingNewPolygon}
+        changeLayer={changeLayer}
+        setPolyPoints={setPolyPoints}
+        setlatLong={setlatLong}
+      />
+      {polygonNotes && <PolygonNoteBoard text={polygonNotes} setUserPolygons={setUserPolygons} setUserIsAddingNewPolygon={setUserIsAddingNewPolygon} setPolygonNotes={setPolygonNotes}/>}
     </div>
+
   );
 }
 

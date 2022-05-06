@@ -8,9 +8,11 @@ import {
 } from "react-leaflet";
 import DataPoint from "./mapFeatures/DataPoint";
 import CustomPopup from "./mapFeatures/CustomPopup";
+import CustumPolygon from "./mapFeatures/CustomPolygon";
 import * as L from "leaflet";
 import GetClickLatLng from "./functions/GetClickLatLng";
 import { useState } from "react";
+import ClickRemove from "./functions/ClickRemove";
 
 export default function Map({
   setMap,
@@ -23,7 +25,13 @@ export default function Map({
   userPoints,
   setUserPoints,
   layer,
-  setLayer
+  setLayer,
+  polyPoints,
+  setPolyPoints,
+  userIsAddingNewPolygon,
+  userPolygons,
+  polygonNotes, 
+  setPolygonNotes
 }) {
   async function removeMarker(lat, lng, id) {
     let response = await fetch("http://localhost:5000/userpoints/", {
@@ -80,6 +88,29 @@ export default function Map({
     });
   }
 
+  let userMadePolygons;
+  if (userPolygons) {
+    userMadePolygons = userPolygons.map((poly) => {
+      return (
+        <CustumPolygon
+          points={poly.points}
+          text={poly.notes}
+          polygonNotes={polygonNotes}
+          setPolygonNotes={setPolygonNotes}
+          user = {user}
+          id={poly.id}
+        />
+      );
+    });
+  }
+
+  let newPolygon = () => {
+    let pointsAsNumbers = polyPoints.map(p => Number(p))
+    return (
+      <CustumPolygon points={pointsAsNumbers} /> 
+    )
+  }
+
   let newMarker = () => {
     return (
       <DataPoint
@@ -110,16 +141,23 @@ export default function Map({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {markers}
+      {userMadePolygons}
       {userMarker()}
       {user && latLong && newMarker()}
+      {user && polyPoints && newPolygon()}
       {userMadeMarkers}
       {user && userIsAddingNewMarker && (
+        <GetClickLatLng setlatLong={setlatLong} poly={false} />
+      )}
+      {user && userIsAddingNewPolygon && (
         <GetClickLatLng
-          userLocation={userLocation}
+          polyPoints={polyPoints}
+          setPolyPoints={setPolyPoints}
           setlatLong={setlatLong}
-          latLong={latLong}
+          poly={true}
         />
       )}
+      {polygonNotes && <ClickRemove setPolygonNotes={setPolygonNotes}/> }
     </MapContainer>
   );
 }
