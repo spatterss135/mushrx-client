@@ -1,9 +1,9 @@
-import DistanceCalculator from "../functions/DistanceCalculator";
-import FilterYear from "./FilterYear";
+import DistanceCalculator from "./functions/DistanceCalculator";
+import FilterYear from "./queryComponents/FilterYear";
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
-export default function MorelsByDistance({
+export default function PeterPan({
   userLocation,
   years,
   setFilteredMorels,

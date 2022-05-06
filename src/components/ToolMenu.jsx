@@ -7,7 +7,7 @@ import {
   CloseButton,
   Button,
 } from "react-bootstrap";
-import MorelsByDistance from "/queryComponents/MorelsByDistance";
+import PeterPan from "./PeterPan";
 import getPoints from "./mapFeatures/GetUserPoints";
 import getPolygons from "./mapFeatures/getPolygons";
 import CurrentWeather from "./DataPanels/CurrentWeather";
@@ -97,7 +97,7 @@ export default function ToolMenu({
           title="Historic Data"
           id="nav-dropdown"
         >
-          <MorelsByDistance
+          <PeterPan
             setFilteredMorels={setFilteredMorels}
             years={years}
             userLocation={userLocation}
