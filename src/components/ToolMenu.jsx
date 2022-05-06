@@ -7,7 +7,7 @@ import {
   CloseButton,
   Button,
 } from "react-bootstrap";
-import MorelsByDistance from "./queryComponents/MorelsByDistance";
+import MorelsByDistance from "./queryComponents/MorelsByDistance/MorelsByDistance";
 import getPoints from "./mapFeatures/GetUserPoints";
 import getPolygons from "./mapFeatures/getPolygons";
 import CurrentWeather from "./DataPanels/CurrentWeather";
