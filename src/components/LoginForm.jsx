@@ -10,7 +10,7 @@ export default function LoginForm({setUser, userDB, setLoginFormUp}){
     const [password, setPassword] = useState('')
     async function getUser(e){
         e.preventDefault()
-        let response = await fetch('http://localhost:5000/users')
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/`)
         let rData = await response.json()
 
         let usersInDB = rData.map(user => [user.username, user.password, user.id, user.avatar])
@@ -27,7 +27,7 @@ export default function LoginForm({setUser, userDB, setLoginFormUp}){
         let usersInDB = userDB.map(user => [user.username, user.password, user.id])
         let userMatch = usersInDB.filter(user => user[0] === username && user[1] === password)
         if (userMatch.length === 0){
-            await fetch('http://localhost:5000/users/',   {
+            await fetch(`${process.env.REACT_APP_BACKEND_URL}/users/`,   {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

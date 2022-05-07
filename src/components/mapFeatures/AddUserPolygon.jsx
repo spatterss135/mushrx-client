@@ -10,7 +10,7 @@ export default function AddUserPolygon({user, setUserPolygons, setUserIsAddingNe
 
   async function postPolygon(){
     let today = new Date()
-    let response = await fetch('http://localhost:5000/userpolygons/',   {
+    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpolygons/',   {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
