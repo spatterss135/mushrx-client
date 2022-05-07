@@ -78,8 +78,11 @@ table, tr, th {
   color: antiquewhite;
   padding-top: 0;
   padding-bottom: 0;
-  
+}
 
+
+.dropdown-menu.show>*{
+  color: antiquewhite;
 }
 
 
@@ -256,4 +259,9 @@ animation: grow 1s forwards ;
   padding: 1.4rem 1rem;
 
   color: antiquewhite;
+}
+
+.DisyoBoi {
+  min-width: max-content;
+  padding: 1rem;
 }

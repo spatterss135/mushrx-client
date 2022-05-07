@@ -38,6 +38,7 @@ function App() {
   const [layer, setLayer] = useState(undefined);
   const [userCity, setUserCity] = useState("Pudding");
   const [polygonNotes, setPolygonNotes] = useState(undefined)
+  const [buttonType, setButtonType] = useState('outline-dark')
 
   function findUser() {
     map.flyTo([userLocation.latitude, userLocation.longitude], 10);
@@ -173,6 +174,10 @@ function App() {
 
   function changeLayer(e) {
     layer.setUrl(e);
+    if (e !== "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png") setButtonType('light')
+    else {
+      setButtonType('outline-dark')
+    }
   }
 
   return (
@@ -256,6 +261,7 @@ function App() {
         changeLayer={changeLayer}
         setPolyPoints={setPolyPoints}
         setlatLong={setlatLong}
+        buttonType={buttonType}
       />
       {polygonNotes && <PolygonNoteBoard text={polygonNotes} setUserPolygons={setUserPolygons} setUserIsAddingNewPolygon={setUserIsAddingNewPolygon} setPolygonNotes={setPolygonNotes}/>}
     </div>

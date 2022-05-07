@@ -56,7 +56,7 @@ export default function LoginForm({setUser, userDB, setLoginFormUp}){
             <label className="pe-1" htmlFor="username">Username</label>
             <input className="me-5" onChange={(e)=> setUsername(e.target.value)} type="text" name='username'/>
             <label className="pe-1" htmlFor="password">Password</label>
-            <input className=''onChange={(e)=> setPassword(e.target.value)} type="text" name='password'/>
+            <input className=''onChange={(e)=> setPassword(e.target.value)} type="password" name='password'/>
             <Button className='ms-2 py-1' size="sm" type="submit" variant="outline-light">{hasAccount && "> Sign In" || 'Register'}</Button>
             </fieldset> 
             <Button className='mt-3' size="sm" variant="outline-light" onClick={() => setHasAccount(!hasAccount)}>{hasAccount && "> Sign Up" || 'Sign In'}</Button>
