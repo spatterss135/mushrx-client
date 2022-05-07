@@ -34,7 +34,7 @@ export default function Map({
   setPolygonNotes
 }) {
   async function removeMarker(lat, lng, id) {
-    let response = await fetch("http://localhost:5000/userpoints/", {
+    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpoints/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

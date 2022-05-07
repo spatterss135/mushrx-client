@@ -5,7 +5,7 @@ import getPolygons from "./mapFeatures/getPolygons";
 export default function PolygonNoteBoard({text, setUserPolygons, setUserIsAddingNewPolygon, setPolygonNotes}){
     console.log(text)
     async function removePolygon(user, id) {
-        let response = await fetch("http://localhost:5000/userpolygons/", {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpolygons/`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",

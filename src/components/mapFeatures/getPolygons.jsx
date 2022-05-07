@@ -1,5 +1,5 @@
 export default async function getPolygons(setUserPolygons, user) {
-  let response = await fetch("http://localhost:5000/userpolygons/");
+  let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpolygons/`);
   let rData = await response.json();
 
   await rData.filter((point) => {

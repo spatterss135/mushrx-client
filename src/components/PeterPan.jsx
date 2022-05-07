@@ -14,7 +14,13 @@ export default function PeterPan({
   async function morelsWithinCertainDistance(e) {
     e.preventDefault()
     async function getMorelMarkers() {
-      const response = await fetch("http://localhost:5000");
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+
+        }
+      });
       const rData = await response.json();
       return rData;
     }

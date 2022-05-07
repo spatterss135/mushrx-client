@@ -46,7 +46,7 @@ function App() {
   useEffect(() => {
     dong();
     let fetchUsers = async () => {
-      let response = await fetch("http://localhost:5000/users");
+      let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users`);
       let rData = await response.json();
       setUserDB(rData);
     };
@@ -134,7 +134,7 @@ function App() {
     setSoilData(rData.hours[0]);
   }
   async function dong() {
-    let response = await fetch("http://localhost:5000/soil");
+    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/soil`);
     let rData = await response.json();
 
     rData = rData.slice(1).split(",").slice(5);
@@ -166,7 +166,7 @@ function App() {
   }
 
   async function makeitHappen() {
-    let response = await fetch("http://localhost:5000/users");
+    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users`);
     let rData = await response.json();
     console.log(rData);
   }
