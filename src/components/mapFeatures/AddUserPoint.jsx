@@ -7,7 +7,7 @@ export default function AddUserPoint({userIsAddingNewMarker, setUserIsAddingNewM
 
     async function postPoint(){
         let today = new Date()
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpoints/',   {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpoints/`,   {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
