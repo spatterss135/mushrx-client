@@ -11,7 +11,7 @@ export default function CustumPolygon({points, text, polygonNotes,
     let smallerArr = []
     let j = 0
     for (let i=0;i<points.length;i++){
-        if (j==2){
+        if (j===2){
             pointsArr.push(smallerArr)
             smallerArr = []
             j = 0
@@ -19,7 +19,7 @@ export default function CustumPolygon({points, text, polygonNotes,
         }
         smallerArr.push(points[i])
         j++
-        if (i==points.length-1)pointsArr.push(smallerArr)
+        if (i === points.length-1)pointsArr.push(smallerArr)
         
     }
 

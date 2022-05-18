@@ -3,7 +3,7 @@ export default async function getPolygons(setUserPolygons, user) {
   let rData = await response.json();
 
   await rData.filter((point) => {
-    return point.user_id == user.id;
+    return point.user_id === user.id;
   });
 
   

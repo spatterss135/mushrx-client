@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
-import { useState } from "react";
+
 
 export default function MapTools({
   findUser,
@@ -17,14 +17,14 @@ export default function MapTools({
 {
   let x;
   let y;
-  if (buttonType =='light'){
+  if (buttonType ==='light'){
     x = {'backgroundColor': 'white'}
     y= {"color": 'black'}
   }
   return (
     <ButtonGroup vertical>
       <Button onClick={findUser} variant={buttonType} title="Find User">
-        <img className="userlocate-btn" src="Icons/user.png" />
+        <img className="userlocate-btn" src="Icons/user.png" alt="Find User"/>
       </Button>
       {user && (
         <Button
@@ -35,7 +35,7 @@ export default function MapTools({
           variant={buttonType}
           title="Add Point"
         >
-          <img className="userlocate-btn" src="Icons/plus.png" />
+          <img className="userlocate-btn" src="Icons/plus.png" alt="Add Point"/>
         </Button>
       )}
       {user && (
@@ -47,7 +47,7 @@ export default function MapTools({
           variant={buttonType}
           title="Add Polygon"
         >
-          <img className="userlocate-btn" src="Icons/shapes.png" />
+          <img className="userlocate-btn" src="Icons/shapes.png" alt="Add Polygon"/>
         </Button>
       )}
       <Dropdown
@@ -57,7 +57,7 @@ export default function MapTools({
         variant={buttonType}
       >
         <Dropdown.Toggle id="dropdown-custom-1" variant={buttonType}>
-          <img className="userlocate-btn" src="Icons/map.png" />
+          <img className="userlocate-btn" src="Icons/map.png" alt="Layer Menu"/>
         </Dropdown.Toggle>
         <Dropdown.Menu style={x}>
           <Dropdown.Item  style={y} eventKey="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png">

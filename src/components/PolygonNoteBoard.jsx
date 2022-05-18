@@ -13,7 +13,7 @@ export default function PolygonNoteBoard({text, setUserPolygons, setUserIsAdding
           },
           body: JSON.stringify({'user':text.user.id, 'id':text.id}),
         });
-        let rData = await response.json()
+        await response.json()
         await getPolygons(setUserPolygons, user)
         setUserIsAddingNewPolygon(false)
         setPolygonNotes(undefined)

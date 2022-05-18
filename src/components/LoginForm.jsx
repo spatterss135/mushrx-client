@@ -52,14 +52,14 @@ export default function LoginForm({setUser, userDB, setLoginFormUp}){
                 makeUser(e)
             }}} action="/" method="get">
             <fieldset>
-            <legend className="pb-3">{hasAccount && 'Sign In To Get Your Personal Data' || 'Create Account To Create Your Own Markers'}</legend>
+            <legend className="pb-3">{(hasAccount && 'Sign In To Get Your Personal Data') || 'Create Account To Create Your Own Markers'}</legend>
             <label className="pe-1" htmlFor="username">Username</label>
             <input className="me-5" onChange={(e)=> setUsername(e.target.value)} type="text" name='username'/>
             <label className="pe-1" htmlFor="password">Password</label>
             <input className=''onChange={(e)=> setPassword(e.target.value)} type="password" name='password'/>
-            <Button className='ms-2 py-1' size="sm" type="submit" variant="outline-light">{hasAccount && "> Sign In" || 'Register'}</Button>
+            <Button className='ms-2 py-1' size="sm" type="submit" variant="outline-light">{(hasAccount && "> Sign In") || 'Register'}</Button>
             </fieldset> 
-            <Button className='mt-3' size="sm" variant="outline-light" onClick={() => setHasAccount(!hasAccount)}>{hasAccount && "> Sign Up" || 'Sign In'}</Button>
+            <Button className='mt-3' size="sm" variant="outline-light" onClick={() => setHasAccount(!hasAccount)}>{(hasAccount && "> Sign Up") || 'Sign In'}</Button>
         </form>
         </div>
         </div>

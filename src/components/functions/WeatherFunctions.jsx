@@ -41,7 +41,7 @@ export function getHistoricalAverages(weatherStats){
     let historicHumidity = 0
     let i = 0
     for (let year in weatherStats){
-        if (year != currentYear && year != 'historical'){
+        if (year !== currentYear && year !== 'historical'){
             i++
             historicRainfall +=weatherStats[year].totalRainInches 
             historicTemp+= weatherStats[year].averageTemp

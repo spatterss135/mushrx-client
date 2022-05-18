@@ -1,5 +1,5 @@
-import { useMap, useMapEvents } from "react-leaflet"
-import { useState } from "react"
+import { useMapEvents } from "react-leaflet"
+
 
 
 export default function GetClickLatLng({setlatLong, polyPoints, setPolyPoints, poly}){
@@ -9,7 +9,7 @@ export default function GetClickLatLng({setlatLong, polyPoints, setPolyPoints, p
     //   setlatLong(userLocation)
     // }
     
-    const map = useMapEvents({
+    useMapEvents({
         click: (e) => {
           if(!poly){
           setlatLong({"latitude":e.latlng.lat, "longitude": e.latlng.lng})

@@ -1,4 +1,4 @@
-import { useState } from "react"
+
 import { createKeys, getRainfall, getAverageTemp, getAverageHumidity, getHistoricalAverages} from "../functions/WeatherFunctions"
 
 import { Table, Button } from "react-bootstrap"

@@ -19,7 +19,7 @@ export default function AddUserPolygon({user, setUserPolygons, setUserIsAddingNe
               },
              body: JSON.stringify({points:polyPoints, found:today, user_id:user.id, notes: text})
         })
-        let rData = await response.json()
+        await response.json()
         await getPolygons(setUserPolygons, user)
         setUserIsAddingNewPolygon(false)
         setPolyPoints(undefined)

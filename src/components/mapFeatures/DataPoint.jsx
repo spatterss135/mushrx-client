@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
+import { Marker, Popup } from 'react-leaflet'
 import * as L from "leaflet";
 export default function DataPoint({latitude, longitude, popup, type}){
   let iconChoice;
@@ -25,10 +25,10 @@ export default function DataPoint({latitude, longitude, popup, type}){
     iconAnchor: [17, 41],
     popupAnchor: [0, -41]
   });
-  if (type == 'user'){
+  if (type === 'user'){
     iconChoice = greenIcon
   }
-  else if  (type == 'userpoint'){
+  else if  (type === 'userpoint'){
     iconChoice = redIcon
   }
   else{

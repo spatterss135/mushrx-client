@@ -1,17 +1,13 @@
 import {
   MapContainer,
   TileLayer,
-  useMapEvents,
-  useMap,
-  Marker,
-  Popup,
+
 } from "react-leaflet";
 import DataPoint from "./mapFeatures/DataPoint";
 import CustomPopup from "./mapFeatures/CustomPopup";
 import CustumPolygon from "./mapFeatures/CustomPolygon";
-import * as L from "leaflet";
 import GetClickLatLng from "./functions/GetClickLatLng";
-import { useState } from "react";
+
 import ClickRemove from "./functions/ClickRemove";
 
 export default function Map({
@@ -138,7 +134,7 @@ export default function Map({
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         ref={setLayer}
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url={layer}
       />
       {markers}
       {userMadePolygons}

@@ -1,12 +1,5 @@
 import Nav from "react-bootstrap/Nav";
-import {
-  DropdownButton,
-  Dropdown,
-  NavDropdown,
-  Accordion,
-  CloseButton,
-  Button,
-} from "react-bootstrap";
+import { NavDropdown } from "react-bootstrap";
 import PeterPan from "./PeterPan";
 import getPoints from "./mapFeatures/GetUserPoints";
 import getPolygons from "./mapFeatures/getPolygons";
@@ -31,29 +24,27 @@ export default function ToolMenu({
   getSampleWeather,
   getSoilData,
   dates,
-  map, 
+  map,
   userCity,
-  setUserPolygons
+  setUserPolygons,
 }) {
   const [progress, setProgress] = useState(0);
   const [hw, setHw] = useState(false);
 
-  useEffect(()=> {
-    let boop = document.querySelectorAll('.nav-link')
-    let boopTwo = document.querySelector('.nav')
-    if (boop){
-        boop.forEach(b => {
-            if (b.textContent == 'My Data') {
-                async function l(){
-                    await b.click()
-                    b.click()}
-                l()    
-                
-                }
-        })
-        
+  useEffect(() => {
+    let boop = document.querySelectorAll(".nav-link");
+    if (boop) {
+      boop.forEach((b) => {
+        if (b.textContent === "My Data") {
+          async function l() {
+            await b.click();
+            b.click();
+          }
+          l();
+        }
+      });
     }
-  }, [user])
+  }, [user]);
 
   function settleThis() {
     let pointOption = document.querySelector(".points");
@@ -66,14 +57,14 @@ export default function ToolMenu({
     items.forEach((item) => item.classList.add("active"));
   }
   const handleSelect = (eventKey, e) => {
-    if (eventKey == "points" && !e.target.classList.contains("active")) {
+    if (eventKey === "points" && !e.target.classList.contains("active")) {
       getPoints(setUserPoints, user);
-    } else if (eventKey == "points") {
+    } else if (eventKey === "points") {
       setUserPoints(undefined);
     }
-    if (eventKey == "polygons" && !e.target.classList.contains("active")) {
+    if (eventKey === "polygons" && !e.target.classList.contains("active")) {
       getPolygons(setUserPolygons, user);
-    } else if (eventKey == "polygons") {
+    } else if (eventKey === "polygons") {
       setUserPolygons(undefined);
     }
     if (e.target.classList.contains("active")) {
@@ -83,11 +74,11 @@ export default function ToolMenu({
       e.target.setAttribute("myMark", "pope");
     }
   };
-// Not sure if this is useful anymore
-//   if (userPoints) {
-//     let x = document.querySelector(".points");
-//     if (x) x.classList.add("active");
-//   }
+  // Not sure if this is useful anymore
+  //   if (userPoints) {
+  //     let x = document.querySelector(".points");
+  //     if (x) x.classList.add("active");
+  //   }
   return (
     <Nav>
       <div className="nav-1">
@@ -110,8 +101,8 @@ export default function ToolMenu({
             drop="up"
             title={"My Data"}
             id="nav-dropdown"
-            mymark='boop'
-            onLoad={(e)=> console.log("DDHDHDHDH")}
+            mymark="boop"
+            onLoad={(e) => console.log("DDHDHDHDH")}
             onSelect={handleSelect}
           >
             <NavDropdown.Item className="points" eventKey="points">
