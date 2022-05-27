@@ -84,7 +84,9 @@ table, tr, th {
 .dropdown-menu.show>*{
   color: antiquewhite;
 }
-
+.layer-dropdown-menu>*>*:hover{
+  color: black;
+}
 
 .table {
   margin-bottom: 0;
@@ -261,7 +263,12 @@ animation: grow 1s forwards ;
   color: antiquewhite;
 }
 
-.DisyoBoi {
+.progress-panel {
   min-width: max-content;
   padding: 1rem;
 }
+
+.a-button-to-get-user-actual-location:hover{
+  cursor: pointer;
+}
+

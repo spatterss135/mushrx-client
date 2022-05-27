@@ -1,47 +1,104 @@
-import {
-  MapContainer,
-  TileLayer,
-
-} from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import DataPoint from "./mapFeatures/DataPoint";
 import CustomPopup from "./mapFeatures/CustomPopup";
 import CustumPolygon from "./mapFeatures/CustomPolygon";
 import GetClickLatLng from "./functions/GetClickLatLng";
 
+import { useEffect } from "react";
+
+import { usePointInfo, usePointInfoUpdate } from "../context/PointContext";
+import { useUserInfo, useUserInfoUpdate } from "../context/UserContext";
+import { usePolygonInfo, usePolygonInfoUpdate } from "../context/PolygonContext";
+import { useApiInfo, useApiInfoUpdate } from "../context/ApiContext";
+
 import ClickRemove from "./functions/ClickRemove";
 
 export default function Map({
   setMap,
-  user,
+  map,
   morelData,
-  userLocation,
-  setlatLong,
-  latLong,
-  userIsAddingNewMarker,
-  userPoints,
-  setUserPoints,
   layer,
   setLayer,
-  polyPoints,
-  setPolyPoints,
-  userIsAddingNewPolygon,
-  userPolygons,
-  polygonNotes, 
-  setPolygonNotes
+
 }) {
+
+  const pointInfo = usePointInfo()
+  const setPointInfo = usePointInfoUpdate()
+
+  const polygonInfo = usePolygonInfo()
+  const setPolygonInfo = usePolygonInfoUpdate()
+
+  const userInfo = useUserInfo()
+  const setUserInfo = useUserInfoUpdate()
+
+  const apiInfo = useApiInfo()
+  const setApiInfo = useApiInfoUpdate()
+
+  useEffect(()=> {
+    if (!userInfo.user){
+      setPointInfo({
+        userPoints: undefined,
+        latLong: undefined,
+        userIsAddingNewMarker: false,
+      })
+      setPolygonInfo({
+        userPolygons: undefined,
+        polygonPoints: undefined,
+        userIsAddingNewPolygon: false,
+        polygonNotes: undefined
+      })
+    }
+  })
+  
+
+  useEffect(()=> {
+    const getLocation = () => {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        setUserInfo({userLocation : {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        }});
+      });
+    };
+    getLocation();
+  }, 
+  
+  [])
+  useEffect(()=> {
+
+    async function getCity() {
+      if (userInfo.userLocation) {
+        let response = await fetch(
+          `https://api.myptv.com/geocoding/v1/locations/by-position/${userInfo.userLocation.latitude}/${userInfo.userLocation.longitude}?language=en`,
+          { headers: { apiKey: `${process.env.REACT_APP_GEOCODE}` } }
+        );
+        let rData = await response.json();
+        setUserInfo({userCity: rData.locations[0].address.city})
+      }
+    }
+    getCity();
+  }, 
+  
+  [userInfo.userLocation])
+
+
+
   async function removeMarker(lat, lng, id) {
-    let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpoints/`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({ latitude: lat, longitude: lng, user_id: id }),
-    });
+    let response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/userpoints/`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ latitude: lat, longitude: lng, user_id: id }),
+      }
+    );
     let rData = await response.json();
-    setUserPoints(rData);
+    setPointInfo({userPoints: rData});
   }
-  let markers = morelData.map((dp) => {
+  let markers = apiInfo.morels.data.map((dp) => {
     return (
       <DataPoint
         latitude={dp.latitude}
@@ -54,20 +111,20 @@ export default function Map({
   let userMarker = () => {
     return (
       <DataPoint
-        latitude={userLocation.latitude}
-        longitude={userLocation.longitude}
+        latitude={userInfo.userLocation.latitude}
+        longitude={userInfo.userLocation.longitude}
         popup={"Your Location"}
         type="user"
       />
     );
   };
   let userMadeMarkers;
-  if (userPoints) {
-    userMadeMarkers = userPoints.map((dp) => {
+  if (pointInfo.userPoints) {
+    userMadeMarkers = pointInfo.userPoints.map((dp) => {
       let popup = (
         <CustomPopup
           dp={dp}
-          user={user}
+          user={userInfo.user}
           removeMarker={removeMarker}
           marker="userpoint"
         />
@@ -85,15 +142,13 @@ export default function Map({
   }
 
   let userMadePolygons;
-  if (userPolygons) {
-    userMadePolygons = userPolygons.map((poly) => {
+  if (polygonInfo.userPolygons) {
+    userMadePolygons = polygonInfo.userPolygons.map((poly) => {
       return (
         <CustumPolygon
           points={poly.points}
           text={poly.notes}
-          polygonNotes={polygonNotes}
-          setPolygonNotes={setPolygonNotes}
-          user = {user}
+          user={userInfo.user}
           id={poly.id}
         />
       );
@@ -101,17 +156,15 @@ export default function Map({
   }
 
   let newPolygon = () => {
-    let pointsAsNumbers = polyPoints.map(p => Number(p))
-    return (
-      <CustumPolygon points={pointsAsNumbers} /> 
-    )
-  }
+    let pointsAsNumbers = polygonInfo.polygonPoints.map((p) => Number(p));
+    return <CustumPolygon points={pointsAsNumbers} />;
+  };
 
   let newMarker = () => {
     return (
       <DataPoint
-        latitude={latLong.latitude}
-        longitude={latLong.longitude}
+        latitude={pointInfo.latLong.latitude}
+        longitude={pointInfo.latLong.longitude}
         popup={"New Shroom"}
         type="userpoint"
       />
@@ -124,10 +177,11 @@ export default function Map({
   ];
 
   return (
-    <MapContainer
+    <>
+    {userInfo.userLocation && <MapContainer
       ref={setMap}
       maxBounds={outerBounds}
-      center={[userLocation.latitude, userLocation.longitude]}
+      center={[userInfo.userLocation.latitude, userInfo.userLocation.longitude]}
       zoom={8}
       scrollWheelZoom={false}
     >
@@ -139,21 +193,21 @@ export default function Map({
       {markers}
       {userMadePolygons}
       {userMarker()}
-      {user && latLong && newMarker()}
-      {user && polyPoints && newPolygon()}
+      {userInfo.user && pointInfo.latLong && newMarker()}
+      {userInfo.user && polygonInfo.polygonPoints && newPolygon()}
       {userMadeMarkers}
-      {user && userIsAddingNewMarker && (
-        <GetClickLatLng setlatLong={setlatLong} poly={false} />
+      {userInfo.user && pointInfo.userIsAddingNewMarker && (
+        <GetClickLatLng poly={false} />
       )}
-      {user && userIsAddingNewPolygon && (
+      {userInfo.user && polygonInfo.userIsAddingNewPolygon && (
         <GetClickLatLng
-          polyPoints={polyPoints}
-          setPolyPoints={setPolyPoints}
-          setlatLong={setlatLong}
           poly={true}
         />
       )}
-      {polygonNotes && <ClickRemove setPolygonNotes={setPolygonNotes}/> }
-    </MapContainer>
+      {userInfo.userChangingLocation && <GetClickLatLng  poly={false} usersPoint={true} />}
+      {polygonInfo.polygonNotes && <ClickRemove />}
+    </MapContainer>}
+    </>
+    
   );
 }

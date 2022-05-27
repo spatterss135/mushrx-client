@@ -1,32 +1,49 @@
-
-import { Button } from "react-bootstrap"
+import { Button } from "react-bootstrap";
 import getPolygons from "./mapFeatures/getPolygons";
 
-export default function PolygonNoteBoard({text, setUserPolygons, setUserIsAddingNewPolygon, setPolygonNotes}){
-    console.log(text)
-    async function removePolygon(user, id) {
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpolygons/`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({'user':text.user.id, 'id':text.id}),
-        });
-        await response.json()
-        await getPolygons(setUserPolygons, user)
-        setUserIsAddingNewPolygon(false)
-        setPolygonNotes(undefined)
+import { usePolygonInfo, usePolygonInfoUpdate } from "../context/PolygonContext";
+import { useUserInfo } from "../context/UserContext";
+
+export default function PolygonNoteBoard({
+  text,
+}) {
+  
+  const userInfo = useUserInfo()
+  
+  const polygonInfo = usePolygonInfo()
+  const setPolygonInfo = usePolygonInfoUpdate()
+
+  async function removePolygon(user, id) {
+    console.log(user, id)
+    let response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/userpolygons/`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ user: user.id, id: id }),
       }
-    return (
-        <div className="noteboard">
-            <div>Your Notes on Polygon #?:</div>
-            <div>{text.text}</div>
-            <Button className="removebtn"
-          onClick={() => removePolygon(text.user, text.id)}
-        >
-          <img className='trashmancan' src="Icons/rubbish.png" alt="" />
-        </Button>
-        </div>
-    )
+    );
+    await response.json();
+    let data = await getPolygons(userInfo.user.id);
+    setPolygonInfo({userPolygons: data, setUserIsAddingNewPolygon: false, polygonNotes: undefined})
+  }
+  return (
+    <>
+    {polygonInfo.polygonNotes && 
+    <div className="noteboard">
+    <div>Your Notes on Polygon #?:</div>
+    <div>{polygonInfo.polygonNotes.text}</div>
+    <Button
+      className="removebtn"
+      onClick={() => removePolygon(polygonInfo.polygonNotes.user, polygonInfo.polygonNotes.id)}
+    >
+      <img className="trashmancan" src="Icons/rubbish.png" alt="" />
+    </Button>
+  </div>}
+    </>
+    
+  );
 }

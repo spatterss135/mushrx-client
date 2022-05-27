@@ -1,9 +1,14 @@
+import { useMapEvents } from "react-leaflet";
 
-import { useMapEvents } from "react-leaflet"
+import { usePolygonInfo, usePolygonInfoUpdate } from "../../context/PolygonContext";
 
-export default function ClickRemove({setPolygonNotes}){
+export default function ClickRemove() {
 
-    useMapEvents({
-        click: (e) => {setPolygonNotes(undefined)}
-    })
+  const polygonInfo = usePolygonInfo()
+  const setPolygonInfo = usePolygonInfoUpdate()
+  useMapEvents({
+    click: (e) => {
+      setPolygonInfo({polygonNotes: undefined});
+    },
+  });
 }

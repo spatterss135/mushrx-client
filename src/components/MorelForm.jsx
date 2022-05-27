@@ -2,38 +2,43 @@ import DistanceCalculator from "./functions/DistanceCalculator";
 import FilterYear from "./queryComponents/FilterYear";
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { useUserInfo, useUserInfoUpdate } from "../context/UserContext";
+import { useApiInfo, useApiInfoUpdate } from "../context/ApiContext";
+export default function MorelForm({
 
-export default function PeterPan({
-  userLocation,
-  years,
-  setFilteredMorels,
-  setYears,
 }) {
+
+  const userInfo = useUserInfo();
+  const setUserInfo = useUserInfoUpdate();  
+  const apiInfo = useApiInfo()
+  const setApiInfo = useApiInfoUpdate()
+
   const [distanceQuery, setDistanceQuery] = useState(50);
 
   async function morelsWithinCertainDistance(e) {
-    e.preventDefault()
+    e.preventDefault();
     async function getMorelMarkers() {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}`, {
         headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
-
-        }
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
       });
       const rData = await response.json();
+      console.log(rData)
       return rData;
     }
     let allShrooms = await getMorelMarkers();
+    console.log(allShrooms)
     let tempMorels = [];
     for (let i = 0; i < allShrooms.length; i++) {
-      let distance = DistanceCalculator(userLocation, allShrooms[i]);
+      let distance = DistanceCalculator(userInfo.userLocation, allShrooms[i]);
       let shroomYear = new Date(allShrooms[i].found_on).getFullYear();
-      if (distance < distanceQuery && years.includes(shroomYear)) {
+      if (distance < distanceQuery && apiInfo.morels.years.includes(shroomYear)) {
         tempMorels.push(allShrooms[i]);
       }
     }
-    setFilteredMorels(tempMorels);
+    setApiInfo({morels: {data: tempMorels, years: apiInfo.morels.years}});
   }
 
   return (
@@ -49,10 +54,10 @@ export default function PeterPan({
         />
         <Form.Text>{distanceQuery} miles</Form.Text>
       </Form.Group>
-        <FilterYear setYears={setYears} years={years} />
-        <Button variant='outline-light'onClick={morelsWithinCertainDistance}>
-          Search
-        </Button>
+      <FilterYear/>
+      <Button variant="outline-light" onClick={morelsWithinCertainDistance}>
+        Search
+      </Button>
     </Form>
   );
 }
