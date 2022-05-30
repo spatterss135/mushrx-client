@@ -8,6 +8,8 @@ import Loading from "./DataPanels/ProgressPanel";
 import { useState, useEffect, useRef } from "react";
 import WeatherPanel from "./DataPanels/WeatherPanel";
 import moment from "moment";
+import UserMenu from "./UserMenu";
+
 
 import { usePointInfo, usePointInfoUpdate } from "../context/PointContext";
 import { useUserInfo, useUserInfoUpdate } from "../context/UserContext";
@@ -18,6 +20,8 @@ import { useApiInfo, useApiInfoUpdate } from "../context/ApiContext";
 export default function ToolMenu({
   map,
   sampleWeatherData,
+  setFriendBoxUp,
+  friendBoxUp
 }) {
   const pointInfo = usePointInfo();
   const setPointInfo = usePointInfoUpdate();
@@ -37,10 +41,23 @@ export default function ToolMenu({
   const [progress, setProgress] = useState(0);
   const [hw, setHw] = useState(false);
 
-  const myDataButton = useRef(undefined)
+  const navigation= useRef('')
+
+  // async function postHelp(){
+  //   let response = await fetch( `${process.env.REACT_APP_BACKEND_URL}/friends`,
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //     body: JSON.stringify({ user_id: 8, friend_id: 9}),
+  //   }
+  // )
+  // }
   
   useEffect(() => {
-
+    
     function getDatesForWeatherStats() {
       let tempDates = [];
       for (let i = 0; i < 5; i++) {
@@ -64,22 +81,36 @@ export default function ToolMenu({
   //   setProgress(0)
   // }, [userInfo.userLocation])
   useEffect(() => {
-    if ( myDataButton.current){myDataButton.current.click()}
-    console.log(myDataButton.current)
-
+    // if (loginButton.current){
+    //   loginButton.current.children[0].children[0].classList.add('login-button')
+    //   console.log(loginButton.current.children[0].children[0])
+    // }
+    console.log(navigation)
+    if (userInfo.userMenuUp){
+      navigation.current.classList.add('vanish')
+      navigation.current.classList.remove('reappear')
+    }
+    else{
+      if (navigation.current.classList.contains('vanish')){
+        navigation.current.classList.add('reappear')
+        navigation.current.classList.remove('vanish')
+      }
+      
+      
+    }
     let boop = document.querySelectorAll(".nav-link");
     if (boop) {
       boop.forEach((b) => {
         if (b.textContent === "My Data") {
           async function l() {
             await b.click();
-            // b.click();
+            b.click();
           }
           l();
         }
       });
     }
-  }, [userInfo.user]);
+  }, [userInfo]);
 
   // Actual function for requesting weather data for last 5 years. Accrues heavy cost via api call
   async function getWeather() {
@@ -197,7 +228,7 @@ export default function ToolMenu({
   }
 
   return (
-    <Nav>
+    <Nav ref={navigation}>
       <div className="nav-1">
         <NavDropdown
           className="hi"
@@ -212,7 +243,6 @@ export default function ToolMenu({
           <NavDropdown
             onClick={settleThis}
             drop="up"
-            ref={myDataButton}
             title={"My Data"}
             id="nav-dropdown"
             mymark="boop"
@@ -262,19 +292,9 @@ export default function ToolMenu({
         </Nav.Item>
       )}
       {userInfo.user && (
-        <Nav.Item
-          onClick={() => {
-            setUserInfo({ user: undefined });
-          }}
-        >
-          <Nav.Link>{userInfo.user.username}</Nav.Link>
-          <img
-            className="avatar"
-            src={`Avatars/identicon-${userInfo.user.avatar}.png`}
-            alt=""
-          />
-        </Nav.Item>
+        <UserMenu friendBoxUp={friendBoxUp} setFriendBoxUp={setFriendBoxUp}/>
       )}
+      
     </Nav>
   );
 }

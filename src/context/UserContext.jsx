@@ -17,7 +17,8 @@ export function UserProvider({ children }) {
       userLocation: undefined,
       userChangingLocation: false,
       userHasChangedLocations: true,
-      userCity: 'Pudding'
+      userCity: 'Pudding',
+      userMenuUp: false
   });
 
   function UserInfoHandler(newInfo) {

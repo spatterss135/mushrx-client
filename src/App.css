@@ -19,10 +19,13 @@ body{
   position: fixed;
   bottom: 0;
   width: 100%;
+  height: 5%;
+  height: auto;
   padding: 0.25% 1%;
   text-align: center;
   display: flex;
   justify-content: space-between;
+  
 }
 
 .dropdown-item {
@@ -272,3 +275,64 @@ animation: grow 1s forwards ;
   cursor: pointer;
 }
 
+
+.offcanvas-item {
+  background-color: rgba(51, 51, 51, 0.942);
+  color: antiquewhite;
+}
+
+div.nav.vanish{
+  animation: vanish 1s linear forwards; 
+}
+
+div.nav.reappear{
+  animation: reappear 1s linear forwards; 
+}
+@keyframes vanish {
+  0%{
+    height: 6%;
+  }
+
+  100%{
+    height: 0%;
+  }
+  
+}
+
+@keyframes reappear {
+  0%{
+    height: 0%;
+  }
+
+  100%{
+    height: 6%;
+  }
+  
+}
+
+.vanishbtn{
+  animation: vanishbtn 1s linear forwards;
+}
+
+.reappearbtn{
+  animation: reappearbtn 1s linear forwards;
+}
+@keyframes vanishbtn {
+  from {
+    left: 95%
+  }
+
+  to {
+    left: 105%
+  }
+}
+
+@keyframes reappearbtn {
+  from {
+    left: 105%
+  }
+
+  to {
+    left: 95%
+  }
+}

@@ -3,6 +3,8 @@ import { usePointInfo, usePointInfoUpdate } from "../context/PointContext";
 import { useUserInfo, useUserInfoUpdate } from "../context/UserContext";
 import { usePolygonInfo, usePolygonInfoUpdate } from "../context/PolygonContext";
 
+import { useEffect, useRef } from "react";
+
 export default function MapTools({
   map,
   changeLayer,
@@ -17,6 +19,21 @@ export default function MapTools({
   const userInfo = useUserInfo();
   const setUserInfo = useUserInfoUpdate();
 
+  const buttons = useRef('')
+
+  useEffect(()=> {
+    if (userInfo.userMenuUp){
+      buttons.current.classList.add('vanishbtn')
+      buttons.current.classList.remove('reappearbtn')
+    }
+    else{
+      if (buttons.current.classList.contains('vanishbtn')){
+        buttons.current.classList.add('reappearbtn')
+        buttons.current.classList.remove('vanishbtn')
+      }
+    }  
+  })
+
   function findUser() {
     map.flyTo(
       [userInfo.userLocation.latitude, userInfo.userLocation.longitude],
@@ -30,7 +47,7 @@ export default function MapTools({
     y = { color: "black" };
   }
   return (
-    <ButtonGroup vertical>
+    <ButtonGroup ref={buttons} vertical>
       <Button onClick={findUser} variant={buttonType} title="Find User">
         <img className="userlocate-btn" src="Icons/user.png" alt="Find User" />
       </Button>

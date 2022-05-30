@@ -2,7 +2,7 @@ import "./App.css";
 import ToolMenu from "./components/ToolMenu";
 import moment from "moment";
 import Map from "./components/Map";
-
+import FriendBox from "./components/FriendBox/FriendBox";
 import LoginForm from "./components/LoginForm";
 import AddUserPoint from "./components/mapFeatures/AddUserPoint";
 import AddUserPolygon from "./components/mapFeatures/AddUserPolygon";
@@ -73,6 +73,8 @@ function App() {
   // Variable for changing ToolMenu
   const [buttonType, setButtonType] = useState("outline-dark");
 
+  const [friendBoxUp, setFriendBoxUp] = useState(false);
+
   function changeLayer(e) {
     layer.setUrl(e);
     if (e !== "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
@@ -85,14 +87,19 @@ function App() {
   return (
     <div className="App">
       <UserProvider>
+        {friendBoxUp && <FriendBox friendBoxUp={friendBoxUp}/>}
         <PolygonProvider>
           <PointProvider>
             <ApiProvider>
               <Map setMap={setMap} layer={layer} setLayer={setLayer} />
               <UserChangingLocationPanel />
-
               <LoginProvider>
-                <ToolMenu sampleWeatherData={sampleWeatherData} map={map} />
+                <ToolMenu
+                  sampleWeatherData={sampleWeatherData}
+                  map={map}
+                  setFriendBoxUp={setFriendBoxUp}
+                  friendBoxUp={friendBoxUp}
+                />
 
                 <LoginForm />
               </LoginProvider>

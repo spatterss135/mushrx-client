@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 
-import { usePointInfo, usePointInfoUpdate } from "../../context/PointContext"
+import { usePointInfo, usePointInfoUpdate } from "../../context/PointContext";
 import { useUserInfo, useUserInfoUpdate } from "../../context/UserContext";
 
 export default function AddUserPoint({ user }) {
@@ -13,10 +13,12 @@ export default function AddUserPoint({ user }) {
   const [text, setText] = useState("");
   const [addingText, setAddingText] = useState(false);
 
-
-
   async function postPoint() {
     let today = new Date();
+    today += today.getTimezoneOffset() / 60
+    today = new Date(today)
+    console.log(today);
+  
     let response = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}/userpoints/`,
       {
@@ -41,37 +43,45 @@ export default function AddUserPoint({ user }) {
       userIsAddingNewMarker: false,
       latLong: undefined,
     });
+    setText("");
   }
 
   return (
     <>
-    {pointInfo.userIsAddingNewMarker && <div className="point-menu">
-      <div>Click on Map to Choose Locations</div>
-      <div>
-        {pointInfo.latLong && pointInfo.userIsAddingNewMarker && !addingText && (
-          <Button
-            className="mt-3"
-            variant="link"
-            onClick={() => setAddingText(true)}
-          >
-            Add a Note
-          </Button>
-        )}
-        {addingText && (
-          <textarea
-            onChange={(e) => setText(e.target.value)}
-            className="usertext"
-          />
-        )}
-      </div>
+      {pointInfo.userIsAddingNewMarker && (
+        <div className="point-menu">
+          <div>Click on Map to Choose Locations</div>
+          <div>
+            {pointInfo.latLong &&
+              pointInfo.userIsAddingNewMarker &&
+              !addingText && (
+                <Button
+                  className="mt-3"
+                  variant="link"
+                  onClick={() => setAddingText(true)}
+                >
+                  Add a Note
+                </Button>
+              )}
+            {addingText && (
+              <textarea
+                onChange={(e) => setText(e.target.value)}
+                className="usertext"
+              />
+            )}
+          </div>
 
-      {pointInfo.latLong && pointInfo.userIsAddingNewMarker && (
-        <Button className="mt-3" variant="outline-light" onClick={postPoint}>
-          Confirm
-        </Button>
+          {pointInfo.latLong && pointInfo.userIsAddingNewMarker && (
+            <Button
+              className="mt-3"
+              variant="outline-light"
+              onClick={postPoint}
+            >
+              Confirm
+            </Button>
+          )}
+        </div>
       )}
-    </div>}
-    
     </>
   );
 }

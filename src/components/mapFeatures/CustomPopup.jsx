@@ -4,7 +4,7 @@ export default function CustomPopup({ marker, dp, user, removeMarker }) {
   if (marker === "userpoint") {
     let year = new Date(dp.found_on).getFullYear();
     let month = new Date(dp.found_on).getMonth() + 1;
-    let day = new Date(dp.found_on).getDate();
+    let day = new Date(dp.found_on).getDate()+1
 
     let monthName = {
       1: "Jan.",
