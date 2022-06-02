@@ -77,15 +77,10 @@ export default function ToolMenu({
     getDatesForWeatherStats();
   }, []);
 
-  // useEffect(()=> {
-  //   setProgress(0)
-  // }, [userInfo.userLocation])
+
   useEffect(() => {
-    // if (loginButton.current){
-    //   loginButton.current.children[0].children[0].classList.add('login-button')
-    //   console.log(loginButton.current.children[0].children[0])
-    // }
-    console.log(navigation)
+
+
     if (userInfo.userMenuUp){
       navigation.current.classList.add('vanish')
       navigation.current.classList.remove('reappear')
@@ -217,7 +212,7 @@ export default function ToolMenu({
 
   function weatherPanelClickHandler(e) {
     if (!apiInfo.soilData || !apiInfo.weatherData.data) {
-      console.log('here')
+
       setProgress(0);
     }
     if (userInfo.userHasChangedLocations) {
@@ -246,7 +241,7 @@ export default function ToolMenu({
             title={"My Data"}
             id="nav-dropdown"
             mymark="boop"
-            onLoad={(e) => console.log("DDHDHDHDH")}
+
             onSelect={handleSelect}
           >
             <NavDropdown.Item className="points" eventKey="points">
@@ -292,7 +287,7 @@ export default function ToolMenu({
         </Nav.Item>
       )}
       {userInfo.user && (
-        <UserMenu friendBoxUp={friendBoxUp} setFriendBoxUp={setFriendBoxUp}/>
+        <UserMenu />
       )}
       
     </Nav>

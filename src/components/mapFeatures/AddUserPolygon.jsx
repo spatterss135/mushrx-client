@@ -42,7 +42,7 @@ export default function AddUserPolygon({
     );
     await response.json();
     let newData = await getPolygons(userInfo.user.id);
-    console.log(newData)
+
 
     setPolygonInfo({userPolygons: newData, userIsAddingNewPolygon: false, polygonPoints: undefined})
     setAddingText(false);

@@ -5,7 +5,7 @@ export default async function getPolygons(id) {
 
   let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/userpolygons/?id=${id}`);
   let rData = await response.json();
-  console.log(rData)
+  
   // rData = await rData.filter((point) => {
   //   return point.user_id === user.id;
   // });
@@ -33,6 +33,5 @@ export default async function getPolygons(id) {
   rData.forEach(data => {
       data.points = data.points.map(num => Number(num))
   })
-  console.log(rData)
   return rData
 }

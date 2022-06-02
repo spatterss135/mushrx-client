@@ -25,11 +25,11 @@ export default function MorelForm({
         },
       });
       const rData = await response.json();
-      console.log(rData)
+
       return rData;
     }
     let allShrooms = await getMorelMarkers();
-    console.log(allShrooms)
+
     let tempMorels = [];
     for (let i = 0; i < allShrooms.length; i++) {
       let distance = DistanceCalculator(userInfo.userLocation, allShrooms[i]);

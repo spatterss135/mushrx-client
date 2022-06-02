@@ -9,21 +9,26 @@
     border: .14rem solid black;
     border-radius: 1rem;
     box-shadow: 10px 10px 39px 19px rgb(7 7 7 / 53%);
-    z-index: 1000;
+    z-index: 3;
+    min-width: 16%;
     width: fit-content;
     height: fit-content;
     padding: 1.4rem 1rem;
-  
+
     color: antiquewhite;
   }
   
   .friend-table{
     background-color: rgba(0, 0, 0, 0.237);
-    border: 1px solid black
+    border: 1px solid black;
+    height: 20rem;
+    overflow-x: hidden;
   }
   #friend-nav{
     position: relative;
     background: none;
+    display: flex;
+    margin-top: 1.5rem;
   }
   
   .friend-item {
@@ -34,6 +39,7 @@
     display: flex;
     justify-content: space-between;
     box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.87);
+    align-items: center;
     
   }
   
@@ -78,6 +84,10 @@
     position: sticky;
 }
 
+.friends-messages:hover{
+  cursor: pointer;
+}
+
 .friends-messages span{
     position: absolute;
     top:0;
@@ -93,3 +103,95 @@
 }
 
 
+.name-placeholder{
+  /* border: 1px solid black; */
+  border-radius: .5rem;
+  width: 100%;
+  height: 1.5rem;
+  background: linear-gradient(to right, rgb(62, 62, 62), rgba(0, 0, 0, 0.373));
+  animation: Animation 5s ease infinite;
+  background-size: 200% 200%;
+}
+
+.fake-avatar{
+  height: 2.3rem;
+  width: 2.3rem;
+  background: linear-gradient(to right, rgb(62, 62, 62), rgba(0, 0, 0, 0.373));
+  animation: Animation 5s ease infinite;
+  background-size: 200% 200%;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+@keyframes loading {
+  0% {
+    background: linear-gradient(to right, rgba(51, 51, 51, 0.67), rgba(0, 0, 0, 0.374));
+  }
+
+  100% {
+    background: linear-gradient(to right,  rgba(0, 0, 0, 0.374), rgba(51, 51, 51, 0.67));
+  }
+}
+
+@keyframes Animation { 
+  0%{background-position:10% 0%}
+  50%{background-position: 250% 0%}
+  100%{background-position:10% 0%}
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: none; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(28, 27, 27, 0.703); 
+  border-radius: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.search-bar {
+  width: 100%;
+  margin: 1rem 0rem;
+  border-radius: 1rem;
+  z-index: 10;
+}
+
+
+.friends-add-image{
+  display: block;
+  width: 2.2rem;
+  height: 100%;
+  border-radius: 50%;
+  padding: .1rem;
+
+}
+
+.add-box{
+  
+  border-radius: 50%;
+  margin: 0rem 0.3rem;
+}
+
+.add-box:hover{
+  background-color: green;
+  cursor: pointer;
+}
+
+.already:hover {
+  background-color: red;
+  cursor: pointer;
+}
+
+.pending:hover{
+  background-color: antiquewhite;
+}

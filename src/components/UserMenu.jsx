@@ -3,22 +3,30 @@ import { useState } from "react";
 
 import UserMenuItem from "./UserMenuItem";
 import { useUserInfo, useUserInfoUpdate } from "../context/UserContext";
+import { useFriendInfo, useFriendInfoUpdate } from "../context/FriendContext";
 
-export default function UserMenu({setFriendBoxUp, friendBoxup}) {
+export default function UserMenu() {
   const userInfo = useUserInfo();
   const setUserInfo = useUserInfoUpdate();
+  const friendInfo = useFriendInfo()
+  const setFriendInfo = useFriendInfoUpdate()
 
-  const handleClose = () => setUserInfo({userMenuUp: false});
+  const handleClose = () => {
+    setFriendInfo({friendBoxUp: false})
+    setUserInfo({userMenuUp: false})
+  }
   const handleShow = () => setUserInfo({userMenuUp: true});
 
   
 
   function signOut(){
-      setUserInfo({user: undefined})
+      setUserInfo({user: undefined, userMenuUp: false})
+      setFriendInfo({friendBoxUp: false})
   }
 
   function toggleFriends(){
-      setFriendBoxUp(friendBoxup => !friendBoxup)
+      setUserInfo({userMenuUp: false})
+      setFriendInfo({friendBoxUp: true})
   }
 
   return (
@@ -41,7 +49,7 @@ export default function UserMenu({setFriendBoxUp, friendBoxup}) {
         show={userInfo.userMenuUp}
         onHide={handleClose}
         className='offcanvas-item'
-        backdropClassName="darkScreen"
+        // backdropClassName="darkScreen"
       >
         <Offcanvas.Header closeButton >
           <Offcanvas.Title
@@ -57,7 +65,7 @@ export default function UserMenu({setFriendBoxUp, friendBoxup}) {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <UserMenuItem text='Sign Out' action={signOut}/>
-          <UserMenuItem text='Friends' action={toggleFriends}/>  
+          <UserMenuItem  text='Friends' action={toggleFriends}/> 
         </Offcanvas.Body>
       </Offcanvas>
     </>

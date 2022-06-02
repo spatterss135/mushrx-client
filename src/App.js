@@ -17,6 +17,7 @@ import { PointProvider } from "./context/PointContext";
 import { UserProvider } from "./context/UserContext";
 import { PolygonProvider } from "./context/PolygonContext";
 import { ApiProvider } from "./context/ApiContext";
+import { FriendProvider } from "./context/FriendContext";
 
 function App() {
   // 1
@@ -84,22 +85,31 @@ function App() {
     }
   }
 
+
+
+
   return (
     <div className="App">
       <UserProvider>
-        {friendBoxUp && <FriendBox friendBoxUp={friendBoxUp}/>}
+        <FriendProvider>
+        <FriendBox />
+        </FriendProvider>
+
+       
         <PolygonProvider>
           <PointProvider>
             <ApiProvider>
               <Map setMap={setMap} layer={layer} setLayer={setLayer} />
               <UserChangingLocationPanel />
               <LoginProvider>
-                <ToolMenu
+              <FriendProvider>
+        <FriendBox />
+        <ToolMenu
                   sampleWeatherData={sampleWeatherData}
                   map={map}
-                  setFriendBoxUp={setFriendBoxUp}
-                  friendBoxUp={friendBoxUp}
                 />
+        </FriendProvider>
+             
 
                 <LoginForm />
               </LoginProvider>

@@ -14,7 +14,7 @@ export default function PolygonNoteBoard({
   const setPolygonInfo = usePolygonInfoUpdate()
 
   async function removePolygon(user, id) {
-    console.log(user, id)
+
     let response = await fetch(
       `${process.env.REACT_APP_BACKEND_URL}/userpolygons/`,
       {

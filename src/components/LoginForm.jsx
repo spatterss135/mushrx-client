@@ -33,7 +33,7 @@ export default function LoginForm({ setUser, setLoginFormUp }) {
       setLoginInfo({failedLoginAttempt: false, failedSignupAttempt: false, loginFormUp: false})
       setUserInfo({user: rData})
     } else {
-      console.log(rData)
+
       setLoginInfo({failedLoginAttempt: true})
     }
   }
